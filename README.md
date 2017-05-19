@@ -26,5 +26,14 @@ addition, it allows for binary masks to be downloaded for machine learning.
 - Copy images that you want to be segmented into images/
 - Run setup/loaddata.php
 - Delete or change permissions on setup directory.
+- Set permissions on admin/
+
+## Usage
+
+- Direct users to index.php
+- See completed segmentations at admin/index.php
+- Review to accept or reject segmentations at admin/reviewresult.php
+- If needed clear out database by running setup/cleardata.php
+
 
 
