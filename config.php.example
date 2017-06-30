@@ -1,0 +1,17 @@
+<?php
+
+$MYSQL_SERVER = "REPLACEME";
+$MYSQL_USER = "REPLACEME";
+$MYSQL_PASS = "REPLACEME";
+$MYSQL_PORT = REPLACEME;
+
+$MYSQL_DB = "REPLACEME";
+$TASK = "REPLACEME"; # can have multiple tasks for segmenting different features on the same set of images
+
+$mysqli_connection = new MySQLi($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DB,$MYSQL_PORT);
+if($mysqli_connection->connect_error){
+           echo "Not connected, error: ".$mysqli_connection->connect_error;
+           exit;
+}
+
+?>
