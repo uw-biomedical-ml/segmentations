@@ -168,45 +168,25 @@ function fillPolygon() {
 	context.fillStyle =  "rgba(255, 0, 255, 0.5)";
 	context.strokeStyle =  "rgba(255, 0, 255, 0.5)";
 	for (var i = 1 ; i <= omnipointer; i++) {
-		var xmin = canvas.width;
-		var xmax = 0;
-		for (var j = 0;j < omnihistory[i].mousex.length ; j++) {
-			if (xmin > omnihistory[i].mousex[j]) {
-				xmin = omnihistory[i].mousex[j];
-			}
-			if (xmax < omnihistory[i].mousex[j]) {
-				xmax = omnihistory[i].mousex[j];
-			}
-		}
 		context.beginPath();
-		context.moveTo(xmin, 0);
-		context.lineTo(xmax, 0);
-		context.lineTo(xmax, canvas.height);
-		context.lineTo(xmin, canvas.height);
+		var j = 0;
+		context.moveTo(omnihistory[i].mousex[j], omnihistory[i].mousey[j]);
+		for (j = 1 ; j < omnihistory[i].mousex.length ; j++) {
+			context.lineTo(omnihistory[i].mousex[j], omnihistory[i].mousey[j]);
+		}
 		context.closePath();
 		context.fill();
 		context.stroke();
 	}
-	var xmin = canvas.width;
-	var xmax = 0;
-	for (var j = 0;j < mousexarr.length; j++) {
-		if (xmin > mousexarr[j]) {
-			xmin = mousexarr[j];
-		}
-		if (xmax < mousexarr[j]) {
-			xmax = mousexarr[j];
-		}
+	context.beginPath();
+	var j = 0;
+	context.moveTo(mousexarr[j], mouseyarr[j]);
+	for (j = 1 ; j < mousexarr.length ; j++) {
+		context.lineTo(mousexarr[j], mouseyarr[j]);
 	}
-	if (xmax != 0) {
-		context.beginPath();
-		context.moveTo(xmin, 0);
-		context.lineTo(xmax, 0);
-		context.lineTo(xmax, canvas.height);
-		context.lineTo(xmin, canvas.height);
-		context.closePath();
-		context.fill();
-		context.stroke();
-	}
+	context.closePath();
+	context.fill();
+	context.stroke();
 }
 
 
@@ -509,7 +489,7 @@ init();
 	</div>
 </div>
 <div class="row" style="margin-top:5px">
-	<div class="col-md-12">
+	<div class="col-md-9">
 <?php if ($id == null) { ?>
 <h4>No images left!</h4>
 
@@ -522,15 +502,12 @@ init();
 		</div>
 <?php } ?>
 	</div>
-</div>
-<div class="row" style="margin-top:5px">
-	<div class="col-md-6">
+	<div class="col-md-3">
 		<div id="instructions">
 		<h4>Segment <?=$TASK?></h4>
 			<p>Click and drag using your mouse to outline the areas of interest. Please carefully study the examples below. If no such pathology is present then just click submit. If it is an <b>invalid image</b> please type into comment box "INVALID." </p>
 		</div>
-	</div>
-	<div class="col-md-3">
+		<div id="submit">
 			<form method="POST" action="index.php">
 			<input type="hidden" id="id" name="id" value="<?=$id?>" />
 			<input type="hidden" id="username" name="username" value="" />
@@ -541,12 +518,11 @@ init();
 			Comments:
 			<textarea class="form-control" name="comments" id="comments" rows="3"></textarea>
 			<br/>
-	</div>
-	<div class="col-md-3">
 			<input class="btn btn-primary" type="submit" size="23" value="Submit" />
 			</form>
 			<a href="index.php"><button class="btn btn-secondary">Get new image</button></a>
 			<br/>
+		</div>
 		<div>Debug: Image id: <a href="<?=$imgfile?>"><?=$id?></a> <br/> </div>
 		<div>Stats: <br/><span id="statsid" ></span> </div>
 	</div>
@@ -555,7 +531,7 @@ init();
 	<div class="col-md-12">
 		<h4>Examples</h4>
 		<hr/>
-<!--<img src="example1.jpg"/> <br/>-->
+<img src="example1.jpg"/> <br/>
 	</div>
 </div>
 <div id="trash"></div> 
