@@ -57,7 +57,7 @@ if ($found != null) {
 	
 	$res = $mysqli_connection->query("SELECT id, filename, username FROM data WHERE username IS NULL AND task = '$TASK' ORDER BY rand()");
 	while ($row = $res->fetch_row()) {
-		if (!array_key_exists($file, $ignore)) {
+		if (!array_key_exists($row[1], $ignore)) {
 			$id = $row[0];
 			$file = $row[1];
 			$task = $row[2];
@@ -132,6 +132,10 @@ function checkCookie() {
     var user=getCookie("username");
     if (user != "") {
         //alert("Welcome again " + user);
+	<?php if (! ((isset($_POST["username"]) && !empty($_POST["username"]))) ) { ?>
+          $("#lgusername").val(user);
+	  $("#loginform").submit();
+	<?php } ?>
     } else {
        while (user == "") {
           user = prompt("Please enter your name:","");
@@ -164,25 +168,45 @@ function fillPolygon() {
 	context.fillStyle =  "rgba(255, 0, 255, 0.5)";
 	context.strokeStyle =  "rgba(255, 0, 255, 0.5)";
 	for (var i = 1 ; i <= omnipointer; i++) {
-		context.beginPath();
-		var j = 0;
-		context.moveTo(omnihistory[i].mousex[j], omnihistory[i].mousey[j]);
-		for (j = 1 ; j < omnihistory[i].mousex.length ; j++) {
-			context.lineTo(omnihistory[i].mousex[j], omnihistory[i].mousey[j]);
+		var xmin = canvas.width;
+		var xmax = 0;
+		for (var j = 0;j < omnihistory[i].mousex.length ; j++) {
+			if (xmin > omnihistory[i].mousex[j]) {
+				xmin = omnihistory[i].mousex[j];
+			}
+			if (xmax < omnihistory[i].mousex[j]) {
+				xmax = omnihistory[i].mousex[j];
+			}
 		}
+		context.beginPath();
+		context.moveTo(xmin, 0);
+		context.lineTo(xmax, 0);
+		context.lineTo(xmax, canvas.height);
+		context.lineTo(xmin, canvas.height);
 		context.closePath();
 		context.fill();
 		context.stroke();
 	}
-	context.beginPath();
-	var j = 0;
-	context.moveTo(mousexarr[j], mouseyarr[j]);
-	for (j = 1 ; j < mousexarr.length ; j++) {
-		context.lineTo(mousexarr[j], mouseyarr[j]);
+	var xmin = canvas.width;
+	var xmax = 0;
+	for (var j = 0;j < mousexarr.length; j++) {
+		if (xmin > mousexarr[j]) {
+			xmin = mousexarr[j];
+		}
+		if (xmax < mousexarr[j]) {
+			xmax = mousexarr[j];
+		}
 	}
-	context.closePath();
-	context.fill();
-	context.stroke();
+	if (xmax != 0) {
+		context.beginPath();
+		context.moveTo(xmin, 0);
+		context.lineTo(xmax, 0);
+		context.lineTo(xmax, canvas.height);
+		context.lineTo(xmin, canvas.height);
+		context.closePath();
+		context.fill();
+		context.stroke();
+	}
 }
 
 
@@ -485,7 +509,7 @@ init();
 	</div>
 </div>
 <div class="row" style="margin-top:5px">
-	<div class="col-md-9">
+	<div class="col-md-12">
 <?php if ($id == null) { ?>
 <h4>No images left!</h4>
 
@@ -498,12 +522,15 @@ init();
 		</div>
 <?php } ?>
 	</div>
-	<div class="col-md-3">
+</div>
+<div class="row" style="margin-top:5px">
+	<div class="col-md-6">
 		<div id="instructions">
 		<h4>Segment <?=$TASK?></h4>
 			<p>Click and drag using your mouse to outline the areas of interest. Please carefully study the examples below. If no such pathology is present then just click submit. If it is an <b>invalid image</b> please type into comment box "INVALID." </p>
 		</div>
-		<div id="submit">
+	</div>
+	<div class="col-md-3">
 			<form method="POST" action="index.php">
 			<input type="hidden" id="id" name="id" value="<?=$id?>" />
 			<input type="hidden" id="username" name="username" value="" />
@@ -514,11 +541,12 @@ init();
 			Comments:
 			<textarea class="form-control" name="comments" id="comments" rows="3"></textarea>
 			<br/>
+	</div>
+	<div class="col-md-3">
 			<input class="btn btn-primary" type="submit" size="23" value="Submit" />
 			</form>
 			<a href="index.php"><button class="btn btn-secondary">Get new image</button></a>
 			<br/>
-		</div>
 		<div>Debug: Image id: <a href="<?=$imgfile?>"><?=$id?></a> <br/> </div>
 		<div>Stats: <br/><span id="statsid" ></span> </div>
 	</div>
@@ -527,7 +555,7 @@ init();
 	<div class="col-md-12">
 		<h4>Examples</h4>
 		<hr/>
-<img src="example1.jpg"/> <br/>
+<!--<img src="example1.jpg"/> <br/>-->
 	</div>
 </div>
 <div id="trash"></div> 
