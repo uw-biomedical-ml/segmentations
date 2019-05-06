@@ -2,7 +2,7 @@
 require("../config.php");
 
 $res = $mysqli_connection->query("
-	CREATE TABLE `data` (
+	CREATE TABLE `$TABLE` (
 		`id` int(6) unsigned NOT NULL AUTO_INCREMENT, 
 		`username` varchar(30) DEFAULT NULL, 
 		`filename` varchar(100) DEFAULT NULL, 

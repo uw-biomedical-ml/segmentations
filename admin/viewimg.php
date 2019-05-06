@@ -4,7 +4,7 @@ require("../config.php");
 $id = $_GET["id"];
 $id = intval($id);
 
-$res = $mysqli_connection->query("SELECT image_base64 FROM data WHERE id = $id");
+$res = $mysqli_connection->query("SELECT image_base64 FROM $TABLE WHERE id = $id");
 $row = $res->fetch_row();
 $data = base64_decode($row[0]);
 

@@ -8,14 +8,14 @@ if (isset($_GET["id"])) {
 		$status = 0;
 	}
 	$gid = intval($_GET["id"]);
-	$res = $mysqli_connection->query("UPDATE data SET status = $status WHERE id= $gid ");
+	$res = $mysqli_connection->query("UPDATE $TABLE SET status = $status WHERE id= $gid ");
 }
 
-$res = $mysqli_connection->query("SELECT count(*) FROM data WHERE status IS NULL and username IS NOT NULL");
+$res = $mysqli_connection->query("SELECT count(*) FROM $TABLE WHERE status IS NULL and username IS NOT NULL");
 $row = $res->fetch_row();
 $todo = $row[0];
 
-$res = $mysqli_connection->query("SELECT filename, data_json, task, id, username, comments FROM data WHERE status IS NULL and username IS NOT NULL LIMIT 1");
+$res = $mysqli_connection->query("SELECT filename, data_json, task, id, username, comments FROM $TABLE WHERE status IS NULL and username IS NOT NULL LIMIT 1");
 $row = $res->fetch_row();
 $id = $row[3];
 $task = strtoupper($row[2]);

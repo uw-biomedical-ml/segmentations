@@ -4,7 +4,7 @@ require("../config.php");
 $id = $_GET["id"];
 $id = intval($id);
 
-$res = $mysqli_connection->query("SELECT filename, data_json, task, comments FROM data WHERE id = $id");
+$res = $mysqli_connection->query("SELECT filename, data_json, task, comments FROM $TABLE WHERE id = $id");
 $row = $res->fetch_row();
 
 if ($row[1] == "") {
@@ -34,8 +34,8 @@ $task = strtoupper($row[2]);
 			<p>Unfortunately, your browser is currently unsupported by our web application. We are sorry for the inconvenience. Please use one of the supported browsers listed below.</p>
 			<p>Supported browsers: <a href="http://chrome.google.com">Chrome</a>, <a href="http://www.opera.com">Opera</a>, <a href="http://www.mozilla.com">Firefox</a>, <a href="http://www.apple.com/safari">Safari</a>, and <a href="http://www.konqueror.org">Konqueror</a>.</p>
 		    </canvas>
-		</div>
 <img src="viewimg.php?id=<?=$id?>">
+		</div>
 </div>
 </div>
 <div>

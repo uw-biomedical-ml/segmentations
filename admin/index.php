@@ -1,7 +1,7 @@
 <?php
 require("../config.php");
 
-$res = $mysqli_connection->query("SELECT id, ts, filename, username, task, status FROM data where username IS NOT NULL ORDER BY ts desc ");
+$res = $mysqli_connection->query("SELECT id, ts, filename, username, task, status FROM $TABLE where username IS NOT NULL ORDER BY ts desc ");
 
 ?>
 <!DOCTYPE html>
